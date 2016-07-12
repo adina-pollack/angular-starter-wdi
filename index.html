@@ -1,35 +1,49 @@
 <!doctype html>
-<html lang="en">
+<html data-ng-app = "heroes" lang="en">
 <head>
   <meta charset="utf-8">
   <title>Superhero Phonebook</title>
   <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css">
   <link rel="stylesheet" href="css/app.css">
+  
   <script src="bower_components/jquery/dist/jquery.js"></script>
   <script src="bower_components/angular/angular.js"></script>
   <script src="bower_components/angular-animate/angular-animate.js"></script>
   <script src="bower_components/angular-route/angular-route.js"></script>
   <script src="bower_components/angular-resource/angular-resource.js"></script>
   <script src="js/app.js"></script>
+  <script src="js/config.js"></script>
+  <script src="js/hero-detail.module.js"></script>
+  <script src="js/hero-detail.component.js"></script>
+
 </head>
-<body>
+<body data-ng-controller = "heroesCtrl as vm">
   <h1>Superheroes</h1>
+  <div ng-view></div>
   <div class="picture">
-    Picture:
+    Picture: <img data-ng-src="{{vm.currentHero}}">
   </div>
-  <div class="search">
-    Search:
-  </div>
+  <input data-ng-model="vm.filter_on" type="text" class="search" placeholder="Search:"/>
   <table class="table">
     <thead>
-      <tr>
-        <th>Name:</th>
-        <th>Number:</th>
-        <th></th>
+      <tr data-ng-repeat="hero in vm.data | filter: vm.filter_on" class={{hero.group.toLowerCase()}}>
+        <th>Name: {{hero.name}}</th>
+        <th>Number: {{hero.number}}</th>
+        <th>Group: {{hero.group}}</th>
+        <th data-ng-click="vm.currentHero = hero.img">Picture!</th>
       </tr>
     </thead>
     <tbody>
     </tbody>
   </table>
+  <h2>Add a Superhero!</h2>
+  <form>
+    <input type="text" data-ng-model="vm.new_hero.name" placeholder="Name"/>
+    <input type="text" data-ng-model="vm.new_hero.number" placeholder="Number"/>
+    <input type="text" data-ng-model="vm.new_hero.group" placeholder="Group"/>
+    <input type="text" data-ng-model="vm.new_hero.img" placeholder="Image URL"/>
+    <button data-ng-click="vm.create()">Submit</button>
+  </form>
 </body>
 </html>
+``
